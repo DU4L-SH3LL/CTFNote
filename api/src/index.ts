@@ -12,6 +12,7 @@ import { migrate, MigrateDBConfig } from "postgres-migrations";
 import config from "./config";
 import createTasKPlugin from "./plugins/createTask";
 import hedgedocAuth from "./plugins/hedgedocAuth";
+import passwordCheck from "./plugins/passwordCheck";
 import importCtfPlugin from "./plugins/importCtf";
 import uploadLogoPlugin from "./plugins/uploadLogo";
 import uploadScalar from "./plugins/uploadScalar";
@@ -45,6 +46,7 @@ function createOptions() {
       uploadLogoPlugin,
       createTasKPlugin,
       hedgedocAuth,
+      passwordCheck,
     ],
     ownerConnectionString: getDbUrl("admin"),
     enableQueryBatching: true,

@@ -23,6 +23,10 @@
             label="Choose a password"
             clearable
             required
+            lazy-rules
+            :rules="[
+              val => (val && val.length > 5) || 'At least 6 characters please.',
+            ]"
           />
           <q-input
             v-if="!!token"
