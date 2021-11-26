@@ -53,7 +53,7 @@ services:
       - CMD_CSP_ENABLE=${CMD_CSP_ENABLE:-false}
       - CMD_IMAGE_UPLOAD_TYPE=${CMD_IMAGE_UPLOAD_TYPE:-imgur}
       - CMD_ALLOW_ANONYMOUS=false
-      - CMD_ALLOW_AgNONYMOUS_EDITS=false
+      - CMD_ALLOW_ANONYMOUS_EDITS=false
     depends_on:
       - db
     restart: always
