@@ -3,7 +3,7 @@ import { parseJson, parseJsonStrict } from '../utils';
 
 const CTFDParser: Parser = {
   name: 'CTFd parser',
-  hint: 'paste ctfd /api/v1/challenge',
+  hint: 'paste json from /api/v1/challenges. For more Information see https://docs.ctfd.io/docs/api/Swagger%20UI',
 
   parse(s: string): ParsedTask[] {
     const tasks = [];
