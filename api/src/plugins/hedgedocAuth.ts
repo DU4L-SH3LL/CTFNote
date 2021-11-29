@@ -62,7 +62,7 @@ export class HedgedocAuth {
 		return this.authPad(username, password, authUrl);
 	}
 
-	static async verifyLogin(cookie: string) {
+	static async verifyLogin(cookie: string): Promise<boolean> {
 		const url = new URL(`${await this.baseUrl()}/me`);
 
 		try {
@@ -93,6 +93,30 @@ export class HedgedocAuth {
 			return result;
 		}
 	}
+}
+
+const register_wrapper = {
+	async resolve(
+		resolve: any,
+		_source: any,
+		args: any,
+		context: any,
+		_resolveInfo: any
+	) {
+		const result = await resolve();
+		await HedgedocAuth.register(
+			args.input.login,
+			args.input.password
+		);
+		context.setHeader(
+			"set-cookie",
+			await HedgedocAuth.login(
+				args.input.login,
+				args.input.password
+			)
+		);
+		return result;
+	},
 }
 
 export default makeWrapResolversPlugin({
@@ -127,28 +151,8 @@ export default makeWrapResolversPlugin({
 				return result;
 			},
 		},
-		register: {
-			async resolve(
-				resolve: any,
-				_source,
-				args,
-				context: any,
-				_resolveInfo
-			) {
-				const result = await resolve();
-				await HedgedocAuth.register(
-					args.input.login,
-					args.input.password
-				);
-				context.setHeader(
-					"set-cookie",
-					await HedgedocAuth.login(
-						args.input.login,
-						args.input.password
-					)
-				);
-				return result;
-			},
-		},
+		register: register_wrapper,
+		registerWithPassword: register_wrapper,
+		registerWithToken: register_wrapper,
 	},
 });
