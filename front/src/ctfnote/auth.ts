@@ -118,7 +118,7 @@ export function useResetPassword() {
 export function useLogout() {
   return () => {
     saveJWT(null);
-    fetch("/pad/logout", { credentials: "same-origin" });
+    void fetch('/pad/logout', { credentials: 'same-origin' });
     document.location.reload();
   };
 }
