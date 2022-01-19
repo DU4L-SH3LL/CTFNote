@@ -111,9 +111,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-  .description {
-    white-space: normal;
-    max-height: 15vh;
-    overflow-y: auto;
-  }
+.description {
+  white-space: normal;
+  max-height: 15vh;
+  overflow-y: auto;
+}
 </style>

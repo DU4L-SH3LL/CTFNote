@@ -12,9 +12,12 @@
             label="Choose a login"
             lazy-rules
             :rules="[
-              val => (val && val.length > 0) || 'Please type something',
-              val => (val && val.indexOf('@') === -1) || 'Please don\'t use @',
-              val => (val && val !== 'ctfnote') || 'ctfnote is resvered for internal use.',
+              (val) => (val && val.length > 0) || 'Please type something',
+              (val) =>
+                (val && val.indexOf('@') === -1) || 'Please don\'t use @',
+              (val) =>
+                (val && val !== 'ctfnote') ||
+                'ctfnote is resvered for internal use.',
             ]"
             required
           />
@@ -25,7 +28,8 @@
             required
             lazy-rules
             :rules="[
-              val => (val && val.length > 5) || 'At least 6 characters please.',
+              (val) =>
+                (val && val.length > 5) || 'At least 6 characters please.',
             ]"
           />
           <q-input
