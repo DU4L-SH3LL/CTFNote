@@ -196,7 +196,7 @@ export default defineComponent({
     });
 
     return {
-      displayMode: makePersistant('task-display-mode', ref('classic')),
+      displayMode: makePersistant('task-display-mode', ref('table')),
       hideSolved,
       filter,
       categoryFilter,
