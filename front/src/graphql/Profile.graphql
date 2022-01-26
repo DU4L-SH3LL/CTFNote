@@ -3,6 +3,7 @@ fragment ProfileFragment on Profile {
   username
   color
   description
+  lastactive
   role
   nodeId
 }
@@ -20,6 +21,13 @@ mutation updateProfile($id: Int!, $patch: ProfilePatch!) {
   updateProfile(input: { id: $id, patch: $patch }) {
     profile {
       ...ProfileFragment
+    }
+  }
+}
+mutation updateLastActive {
+  updateLastActive (input: { }) {
+    updateLastActiveResponse {
+      ok
     }
   }
 }

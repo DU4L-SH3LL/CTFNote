@@ -1,12 +1,17 @@
 import { boot } from 'quasar/wrappers';
 import { ctfnote } from 'src/ctfnote';
 import { isLogged } from 'src/ctfnote/me';
+import { useUpdateLastActiveMutation } from 'src/generated/graphql';
 
 export default boot(async ({ router, redirect, urlPath }) => {
   router.beforeEach(async (to) => {
     const r = await isLogged();
     if (!r && !to.meta.public) {
       return { name: 'auth-login' };
+    }
+    if (r) {
+      const { mutate } = useUpdateLastActiveMutation();
+      void mutate();
     }
   });
 

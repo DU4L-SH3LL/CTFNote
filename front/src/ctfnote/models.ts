@@ -17,6 +17,7 @@ export type Maybe<T> = T | null;
 export type Profile = {
   id: Id<Profile>;
   username: string;
+  lastactive: string;
   role: Role;
   description: string;
   color: string;
