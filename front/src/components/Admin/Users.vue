@@ -110,7 +110,9 @@ const columns = [
   {
     name: 'lastactive',
     label: 'Last active',
-    field: (u: User) => { return date.formatDate(u.profile.lastactive, 'YYYY-MM-DD HH:mm:ss') },
+    field: (u: User) => {
+      return date.formatDate(u.profile.lastactive, 'YYYY-MM-DD HH:mm:ss');
+    },
     sortable: true,
   },
   {
