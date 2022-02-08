@@ -78,11 +78,7 @@ function createOptions() {
 
 function createApp(postgraphileOptions: PostGraphileOptions) {
   const pool = new Pool({
-    host: config.db.host,
-    database: config.db.database,
-    port: config.db.port,
-    user: config.db.admin.login,
-    password: config.db.admin.password,
+    connectionString: getDbUrl("user"),
   });
 
   const app = express();
