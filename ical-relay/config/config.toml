@@ -1,0 +1,13 @@
+[server]
+addr = ":8080"
+loglevel = "debug"
+
+[profiles]
+  [profiles.du4lcombined]
+    url = "http://front/calendar.ics?key=27b4baf492e1dadd5f525e4ca04dbaf8"
+    regex = [""]
+    public = true
+    from = "2021-12-02T00:00:00Z"
+    until = "2021-12-31T00:00:00Z"
+    passid = true
+    addurl = ["https://outlook.live.com/owa/calendar/00000000-0000-0000-0000-000000000000/d8c3ea1e-74f4-4920-8b55-6166e4c9f57e/cid-DB8463EC38A495B6/calendar.ics"]

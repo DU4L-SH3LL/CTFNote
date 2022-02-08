@@ -61,6 +61,17 @@ services:
       - pad-uploads:/hedgedoc/public/uploads
     networks:
       - ctfnote
+  ical-relay:
+    build: ./ical-relay
+    restart: unless-stopped
+    volumes:
+      - ./ical-relay/config:/config
+    depends_on:
+      - front
+    networks:
+      - ctfnote
+    ports:
+      - 48080:8080
 volumes:
   ctfnote-db:
     name: ctfnote
