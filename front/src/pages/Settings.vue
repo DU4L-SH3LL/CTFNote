@@ -31,9 +31,14 @@
                     hint="Displayed name"
                     lazy-rules
                     :rules="[
-                      val => (val && val.length > 0) || 'Please type something',
-                      val => (val && val.indexOf('@') === -1) || 'Please don\'t use @',
-                      val => (val && val !== 'ctfnote') || 'ctfnote is resvered for internal use.',
+                      (val) =>
+                        (val && val.length > 0) || 'Please type something',
+                      (val) =>
+                        (val && val.indexOf('@') === -1) ||
+                        'Please don\'t use @',
+                      (val) =>
+                        (val && val !== 'ctfnote') ||
+                        'ctfnote is resvered for internal use.',
                     ]"
                     @keyup.enter="changeProfile"
                   >
@@ -70,8 +75,15 @@
           <q-card bordered>
             <q-form @submit="changePassword">
               <q-card-section>
-                <div class="text-h6"><span style="text-decoration: line-through;">Change Password</span></div>
-                <div>Disabled until further notice. Please contact an administrator if you need to change your password.</div>
+                <div class="text-h6">
+                  <span style="text-decoration: line-through"
+                    >Change Password</span
+                  >
+                </div>
+                <div>
+                  Disabled until further notice. Please contact an administrator
+                  if you need to change your password.
+                </div>
               </q-card-section>
               <q-separator class="q-mx-xl" />
               <q-card-section class="q-gutter-sm">
