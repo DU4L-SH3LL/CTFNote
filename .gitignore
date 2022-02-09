@@ -145,3 +145,8 @@ temp/
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,node
+
+### OWN ###
+
+#the real production config for the calendar
+/ical-relay/config/config.toml
