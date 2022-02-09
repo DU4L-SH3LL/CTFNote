@@ -41,6 +41,7 @@ services:
       context: "./front"
     depends_on:
       - hedgedoc
+      - api
     ports:
       - 8080:80
   hedgedoc:
