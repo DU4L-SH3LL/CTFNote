@@ -149,4 +149,4 @@ temp/
 ### OWN ###
 
 #the real production config for the calendar
-/ical-relay/config/config.toml
+config.toml
