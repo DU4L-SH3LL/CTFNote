@@ -70,8 +70,6 @@ services:
       - front
     networks:
       - ctfnote
-    ports:
-      - 48080:8080
 volumes:
   ctfnote-db:
     name: ctfnote

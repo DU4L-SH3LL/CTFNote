@@ -4,7 +4,7 @@ loglevel = "debug"
 
 [profiles]
   [profiles.du4lcombined]
-    url = "http://front/calendar.ics?key=27b4baf492e1dadd5f525e4ca04dbaf8"
+    url = "http://api:3000/calendar.ics?key=27b4baf492e1dadd5f525e4ca04dbaf8"
     regex = [""]
     public = true
     from = "2021-12-02T00:00:00Z"
