@@ -3,7 +3,12 @@
     <q-toolbar>
       <q-toolbar-title class="row items-center q-gutter-md">
         <ctf-note-link name="index" class="text-white" underline>
-          <q-img src="/favicon-transparent.svg" width="30px" class="q-mr-md" :ratio="1" />
+          <q-img
+            src="/favicon-transparent.svg"
+            width="30px"
+            class="q-mr-md"
+            :ratio="1"
+          />
           <q-btn flat no-caps>CTFNote</q-btn>
         </ctf-note-link>
         <slot name="after-title" />

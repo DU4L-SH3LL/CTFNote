@@ -16,6 +16,8 @@ import passwordCheck from "./plugins/passwordCheck";
 import importCtfPlugin from "./plugins/importCtf";
 import uploadLogoPlugin from "./plugins/uploadLogo";
 import uploadScalar from "./plugins/uploadScalar";
+import { Pool } from "pg";
+import { icalRoute } from "./routes/ical";
 
 function getDbUrl(role: "user" | "admin") {
   const login = config.db[role].login;
@@ -53,7 +55,8 @@ function createOptions() {
     legacyRelations: "omit" as const,
     async additionalGraphQLContextFromRequest(req, res) {
       return {
-        setHeader: (name: string, value: string | number) => res.setHeader(name, value)
+        setHeader: (name: string, value: string | number) =>
+          res.setHeader(name, value),
       };
     },
   };
@@ -74,17 +77,22 @@ function createOptions() {
 }
 
 function createApp(postgraphileOptions: PostGraphileOptions) {
+  const pool = new Pool({
+    connectionString: getDbUrl("user"),
+  });
+
   const app = express();
   app.use(graphqlUploadExpress());
   app.use(
     "/uploads",
     express.static("uploads", {
-      setHeaders: function (res, path, stat) {
+      setHeaders: function (res) {
         res.set("Content-Disposition", "attachment");
       },
     })
   );
-  app.use(postgraphile(getDbUrl("user"), "ctfnote", postgraphileOptions));
+  app.use(postgraphile(pool, "ctfnote", postgraphileOptions));
+  app.use("/calendar.ics", icalRoute(pool));
   return app;
 }
 

@@ -25,7 +25,7 @@ mutation updateProfile($id: Int!, $patch: ProfilePatch!) {
   }
 }
 mutation updateLastActive {
-  updateLastActive (input: { }) {
+  updateLastActive(input: {}) {
     updateLastActiveResponse {
       ok
     }

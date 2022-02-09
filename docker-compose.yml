@@ -41,6 +41,7 @@ services:
       context: "./front"
     depends_on:
       - hedgedoc
+      - api
     ports:
       - 8080:80
   hedgedoc:
@@ -59,6 +60,15 @@ services:
     restart: always
     volumes:
       - pad-uploads:/hedgedoc/public/uploads
+    networks:
+      - ctfnote
+  ical-relay:
+    build: ./ical-relay
+    restart: unless-stopped
+    volumes:
+      - ./ical-relay/config:/config
+    depends_on:
+      - front
     networks:
       - ctfnote
 volumes:
