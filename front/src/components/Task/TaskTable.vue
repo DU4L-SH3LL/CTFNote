@@ -27,7 +27,9 @@
 
         <q-td key="description" :props="props">
           <pre v-if="props.row.solved" class="blur">{{ props.row.flag }}</pre>
-          <pre v-else>{{ props.row.description || '…' }}</pre>
+          <div v-else class="description">
+            {{ props.row.description || '…' }}
+          </div>
         </q-td>
         <q-td key="players" :props="props" auto-width>
           <task-player-list :task="props.row" />
@@ -108,4 +110,10 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.description {
+  white-space: normal;
+  max-height: 15vh;
+  overflow-y: auto;
+}
+</style>
