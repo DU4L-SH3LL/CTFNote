@@ -42,10 +42,32 @@
 
             <div class="row q-col-gutter-md">
               <div class="col">
-                <datetime-input v-model="form.startTime" label="Start on" />
+                <datetime-input
+                  v-model="form.startTime"
+                  label="Start on"
+                  @change="
+                    () => {
+                      if (form.endTime < form.startTime) {
+                        form.endTime = form.startTime.setDate(
+                          form.startTime.getDate() + 1
+                        );
+                      }
+                    }
+                  "
+                />
               </div>
               <div class="col">
-                <datetime-input v-model="form.endTime" label="End on" />
+                <datetime-input
+                  v-model="form.endTime"
+                  label="End on"
+                  lazy-rules
+                  :rules="[
+                    // Using form.endTime here because apparently val is still a string, but form.endTime is a Date
+                    (val) =>
+                      (form.endTime && form.endTime > form.startTime) ||
+                      'End time must be after start time',
+                  ]"
+                />
               </div>
             </div>
             <div class="row q-col-gutter-md">
