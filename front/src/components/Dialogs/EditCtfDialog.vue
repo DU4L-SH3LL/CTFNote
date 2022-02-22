@@ -45,11 +45,12 @@
                 <datetime-input
                   v-model="form.startTime"
                   label="Start on"
-                  @change="
+                  @update:modelValue="
                     () => {
                       if (form.endTime < form.startTime) {
-                        form.endTime = form.startTime.setDate(
-                          form.startTime.getDate() + 1
+                        form.endTime = new Date(
+                          form.startTime.getTime() +
+                            1000 * 60 * 60 * 24 /* 24 hours in milliseconds */
                         );
                       }
                     }
@@ -113,7 +114,7 @@ export default defineComponent({
           title: '',
           description: '',
           startTime: now,
-          endTime: now,
+          endTime: new Date(now.getTime() + 1000 * 60 * 60 * 24),
           weight: 0,
           ctfUrl: null,
           ctftimeUrl: null,
