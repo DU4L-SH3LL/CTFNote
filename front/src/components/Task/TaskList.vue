@@ -175,17 +175,17 @@ export default defineComponent({
     const hideSolved = makePersistant('task-hide-solved', ref(false));
     const hideAssigned = makePersistant('task-hide-assigned', ref(false));
     const myTasks = makePersistant('task-my-tasks', ref(false));
-    
+
     provide(keys.isTaskVisible, (task: Task) => {
       const needle = filter.value.toLowerCase();
       // Hide solved task if hideSolved == true
       if (hideSolved.value && task.solved) return false;
 
       if (hideAssigned.value && task.workOnTasks.length) return false;
-      
+
       if (myTasks.value && task.workOnTasks.indexOf(me.value.profile.id) === -1)
         return false;
-        
+
       // Hide task if there is a filter and category not in filter
       const catFilter = categoryFilter.value;
       if (catFilter.length && !catFilter.includes(task.category ?? '')) {
