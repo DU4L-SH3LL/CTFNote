@@ -30,6 +30,9 @@
         <q-checkbox v-model="hideSolved" label="Hide solved" />
         <q-checkbox v-model="myTasks" label="Show my tasks" />
       </div>
+      <div class="col col-auto">
+        <q-checkbox v-model="hideAssigned" label="Hide assigned" />
+      </div>
       <q-space />
       <div class="col col-1">
         <q-select
@@ -170,12 +173,15 @@ export default defineComponent({
     const filter = ref('');
     const categoryFilter = ref<string[]>([]);
     const hideSolved = makePersistant('task-hide-solved', ref(false));
+    const hideAssigned = makePersistant('task-hide-assigned', ref(false));
     const myTasks = makePersistant('task-my-tasks', ref(false));
 
     provide(keys.isTaskVisible, (task: Task) => {
       const needle = filter.value.toLowerCase();
       // Hide solved task if hideSolved == true
       if (hideSolved.value && task.solved) return false;
+
+      if (hideAssigned.value && task.workOnTasks.length) return false;
 
       if (myTasks.value && task.workOnTasks.indexOf(me.value.profile.id) === -1)
         return false;
@@ -202,8 +208,9 @@ export default defineComponent({
     });
 
     return {
-      displayMode: makePersistant('task-display-mode', ref('classic')),
+      displayMode: makePersistant('task-display-mode', ref('table')),
       hideSolved,
+      hideAssigned,
       myTasks,
       filter,
       categoryFilter,

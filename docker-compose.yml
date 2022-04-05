@@ -42,8 +42,9 @@ services:
     depends_on:
       - hedgedoc
       - api
+      - ical-relay
     ports:
-      - 8080:80
+      - 8088:80
   hedgedoc:
     image: quay.io/hedgedoc/hedgedoc:1.9.2-alpine
     environment:
@@ -67,8 +68,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./ical-relay/config:/config
-    depends_on:
-      - front
     networks:
       - ctfnote
 volumes:
