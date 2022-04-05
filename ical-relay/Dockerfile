@@ -3,8 +3,7 @@ FROM golang
 RUN apt-get update && apt-get install golang-rice git -y
 
 WORKDIR /app
-RUN git clone --branch staging https://github.com/JM-Lemmi/ical-relay ical-relay
-RUN git clone https://github.com/arran4/golang-ical golang-ical
+RUN git clone https://github.com/DU4L/ical-relay ical-relay
 
 WORKDIR /app/ical-relay
 RUN rice embed-go && go build .
