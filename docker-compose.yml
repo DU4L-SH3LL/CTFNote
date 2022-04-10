@@ -64,10 +64,10 @@ services:
     networks:
       - ctfnote
   ical-relay:
-    build: ./ical-relay
+    image: ghcr.io/jm-lemmi/ical-relay:latest
     restart: unless-stopped
     volumes:
-      - ./ical-relay/config:/config
+      - ./ical-relay/config.yml:/app/config.yml
     networks:
       - ctfnote
 volumes:
