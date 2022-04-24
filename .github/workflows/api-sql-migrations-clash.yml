@@ -1,0 +1,11 @@
+name: "api/sql Migrations Clash Check"
+
+on: [ pull_request ]
+
+jobs:
+  check-clash:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: ./.github/scripts/api-sql-migrations-clash.sh
+      shell: bash
