@@ -39,7 +39,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
-          platforms: linux/amd64,linux/arm64,linux/arm
+          platforms: linux/amd64
           context: ./front
           push: ${{ github.event_name != 'pull_request' }} # will only push if not a pull_request
           tags: ${{ steps.meta.outputs.tags }}
@@ -74,7 +74,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
-          platforms: linux/amd64,linux/arm64,linux/arm
+          platforms: linux/amd64
           context: ./db
           push: ${{ github.event_name != 'pull_request' }} # will only push if not a pull_request
           tags: ${{ steps.meta.outputs.tags }}
@@ -111,7 +111,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
-          platforms: linux/amd64,linux/arm64,linux/arm
+          platforms: linux/amd64
           context: ./api
           push: ${{ github.event_name != 'pull_request' }} # will only push if not a pull_request
           tags: ${{ steps.meta.outputs.tags }}
