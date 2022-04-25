@@ -63,13 +63,6 @@ services:
       - pad-uploads:/hedgedoc/public/uploads
     networks:
       - ctfnote
-  ical-relay:
-    build: ./ical-relay
-    restart: unless-stopped
-    volumes:
-      - ./ical-relay/config:/config
-    networks:
-      - ctfnote
 volumes:
   ctfnote-db:
     name: ctfnote
