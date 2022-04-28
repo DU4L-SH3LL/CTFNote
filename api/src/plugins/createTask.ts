@@ -4,16 +4,45 @@ import savepointWrapper from "./savepointWrapper";
 import { HedgedocAuth } from "./hedgedocAuth";
 import config from "../config";
 
-async function createPad(): Promise<string> {
+function buildNoteContent(
+  title: string,
+  description?: string,
+  category?: string
+): string {
+  return `# ${title} - ${category}
+
+## Description
+
+${description}
+
+## Notes
+
+## Writeup
+`;
+}
+
+async function createPad(
+  title: string,
+  description?: string,
+  category?: string
+): Promise<string> {
   const Cookie = await HedgedocAuth.login("ctfnote", config.pad.ownerPass);
+  const options = {
+    headers: {
+      Cookie,
+      "Content-Type": "text/markdown",
+    },
+
+    maxRedirects: 0,
+    validateStatus: (status: number) => status === 302,
+  };
+
   try {
-    const res = await axios.get(config.pad.createUrl, {
-      maxRedirects: 0,
-      headers: {
-        Cookie,
-      },
-      validateStatus: (status) => status === 302,
-    });
+    const res = await axios.post(
+      config.pad.createUrl,
+      buildNoteContent(title, description, category),
+      options
+    );
     return res.headers.location;
   } catch (e) {
     throw Error(`Call to ${config.pad.createUrl} during task creation failed.`);
@@ -49,7 +78,7 @@ export default makeExtendSchemaPlugin((build) => {
           { pgClient },
           resolveInfo
         ) => {
-          const padPathOrUrl = await createPad();
+          const padPathOrUrl = await createPad(title, description, category);
 
           let padPath: string;
           if (padPathOrUrl.startsWith("/")) {
