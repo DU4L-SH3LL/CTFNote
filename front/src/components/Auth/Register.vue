@@ -10,6 +10,15 @@
             v-model="form.login"
             filled
             label="Choose a login"
+            lazy-rules
+            :rules="[
+              (val) => (val && val.length > 0) || 'Please type something',
+              (val) =>
+                (val && val.indexOf('@') === -1) || 'Please don\'t use @',
+              (val) =>
+                (val && val !== 'ctfnote') ||
+                'ctfnote is resvered for internal use.',
+            ]"
             required
           />
           <password-input
@@ -17,6 +26,11 @@
             label="Choose a password"
             clearable
             required
+            lazy-rules
+            :rules="[
+              (val) =>
+                (val && val.length > 5) || 'At least 6 characters please.',
+            ]"
           />
           <q-input
             v-if="!!token"
@@ -91,7 +105,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      wrapNotify: ctfnote.ui.useWrapNotify(),
+      resolveAndNotify: ctfnote.ui.useNotify().resolveAndNotify,
       register: ctfnote.auth.useRegister(),
       registerWithToken: ctfnote.auth.useRegisterWithToken(),
       registerWithPassword: ctfnote.auth.useRegisterWithPassword(),
@@ -124,28 +138,25 @@ export default defineComponent({
         message: `Logged as ${this.form.login}!`,
         icon: 'person',
       };
-      let registerFunction;
+      let registerPromise;
 
       if (this.token) {
-        registerFunction = () =>
-          this.registerWithToken(
-            this.form.login,
-            this.form.password,
-            this.token
-          );
+        registerPromise = this.registerWithToken(
+          this.form.login,
+          this.form.password,
+          this.token
+        );
       } else if (this.registrationPasswordForced || this.usePassword) {
-        registerFunction = () =>
-          this.registerWithPassword(
-            this.form.login,
-            this.form.password,
-            this.form.ctfnotePassword
-          );
+        registerPromise = this.registerWithPassword(
+          this.form.login,
+          this.form.password,
+          this.form.ctfnotePassword
+        );
       } else {
-        registerFunction = () =>
-          this.register(this.form.login, this.form.password);
+        registerPromise = this.register(this.form.login, this.form.password);
       }
 
-      void this.wrapNotify(registerFunction, opts);
+      void this.resolveAndNotify(registerPromise, opts);
     },
   },
 });

@@ -42,10 +42,33 @@
 
             <div class="row q-col-gutter-md">
               <div class="col">
-                <datetime-input v-model="form.startTime" label="Start on" />
+                <datetime-input
+                  v-model="form.startTime"
+                  label="Start on"
+                  @update:modelValue="
+                    () => {
+                      if (form.endTime < form.startTime) {
+                        form.endTime = new Date(
+                          form.startTime.getTime() +
+                            1000 * 60 * 60 * 24 /* 24 hours in milliseconds */
+                        );
+                      }
+                    }
+                  "
+                />
               </div>
               <div class="col">
-                <datetime-input v-model="form.endTime" label="End on" />
+                <datetime-input
+                  v-model="form.endTime"
+                  label="End on"
+                  lazy-rules
+                  :rules="[
+                    // Using form.endTime here because apparently val is still a string, but form.endTime is a Date
+                    (val) =>
+                      (form.endTime && form.endTime > form.startTime) ||
+                      'End time must be after start time',
+                  ]"
+                />
               </div>
             </div>
             <div class="row q-col-gutter-md">
@@ -91,7 +114,7 @@ export default defineComponent({
           title: '',
           description: '',
           startTime: now,
-          endTime: now,
+          endTime: new Date(now.getTime() + 1000 * 60 * 60 * 24),
           weight: 0,
           ctfUrl: null,
           ctftimeUrl: null,
@@ -104,7 +127,7 @@ export default defineComponent({
       useDialogPluginComponent();
 
     return {
-      wrapNotify: ctfnote.ui.useWrapNotify(),
+      resolveAndNotify: ctfnote.ui.useNotify().resolveAndNotify,
       updateCtf: ctfnote.ctfs.useUpdateCtf(),
       createCtf: ctfnote.ctfs.useCreateCtf(),
       dialogRef,
@@ -130,17 +153,16 @@ export default defineComponent({
           message: `CTF ${ctf.title} updated!`,
           icon: 'flag',
         };
-        void this.wrapNotify(
-          () =>
-            this.updateCtf(ctf, {
-              ...this.form,
-              startTime: this.form.startTime.toISOString(),
-              endTime: this.form.endTime.toISOString(),
-            }),
+        void this.resolveAndNotify(
+          this.updateCtf(ctf, {
+            ...this.form,
+            startTime: this.form.startTime.toISOString(),
+            endTime: this.form.endTime.toISOString(),
+          }),
           opts
         );
       } else {
-        void this.wrapNotify(() =>
+        void this.resolveAndNotify(
           this.createCtf({
             ...this.form,
             startTime: this.form.startTime.toISOString(),

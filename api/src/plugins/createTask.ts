@@ -1,6 +1,7 @@
 import { makeExtendSchemaPlugin, gql } from "graphile-utils";
 import axios from "axios";
 import savepointWrapper from "./savepointWrapper";
+import { HedgedocAuth } from "./hedgedocAuth";
 import config from "../config";
 
 function buildNoteContent(
@@ -35,7 +36,9 @@ async function createPad(
   category?: string
 ): Promise<string> {
   const options = {
+    const Cookie = await HedgedocAuth.login("ctfnote", config.pad.ownerPass);
     headers: {
+      Cookie,
       "Content-Type": "text/markdown",
     },
 

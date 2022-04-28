@@ -17,6 +17,7 @@ export type Maybe<T> = T | null;
 export type Profile = {
   id: Id<Profile>;
   username: string;
+  lastactive: string;
   role: Role;
   description: string;
   color: string;
@@ -100,6 +101,7 @@ export type Settings = {
 export type AdminSettings = Settings & {
   registrationPassword: string;
   registrationDefaultRole: Role;
+  icalPassword: string;
 };
 
 export type User = {

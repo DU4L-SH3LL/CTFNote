@@ -28,6 +28,10 @@
       </div>
       <div class="col col-auto">
         <q-checkbox v-model="hideSolved" label="Hide solved" />
+        <q-checkbox v-model="myTasks" label="Show my tasks" />
+      </div>
+      <div class="col col-auto">
+        <q-checkbox v-model="hideAssigned" label="Hide assigned" />
       </div>
       <q-space />
       <div class="col col-1">
@@ -121,6 +125,7 @@ export default defineComponent({
 
     const updateTask = ctfnote.tasks.useUpdateTask();
     const deleteTask = ctfnote.tasks.useDeleteTask();
+    const me = ctfnote.me.injectMe();
 
     provide(keys.solveTaskPopup, (task: Task) => {
       $q.dialog({
@@ -168,11 +173,18 @@ export default defineComponent({
     const filter = ref('');
     const categoryFilter = ref<string[]>([]);
     const hideSolved = makePersistant('task-hide-solved', ref(false));
+    const hideAssigned = makePersistant('task-hide-assigned', ref(false));
+    const myTasks = makePersistant('task-my-tasks', ref(false));
 
     provide(keys.isTaskVisible, (task: Task) => {
       const needle = filter.value.toLowerCase();
       // Hide solved task if hideSolved == true
       if (hideSolved.value && task.solved) return false;
+
+      if (hideAssigned.value && task.workOnTasks.length) return false;
+
+      if (myTasks.value && task.workOnTasks.indexOf(me.value.profile.id) === -1)
+        return false;
 
       // Hide task if there is a filter and category not in filter
       const catFilter = categoryFilter.value;
@@ -196,11 +208,14 @@ export default defineComponent({
     });
 
     return {
-      displayMode: makePersistant('task-display-mode', ref('classic')),
+      displayMode: makePersistant('task-display-mode', ref('table')),
       hideSolved,
+      hideAssigned,
+      myTasks,
       filter,
       categoryFilter,
       displayOptions,
+      me,
     };
   },
   computed: {
@@ -215,16 +230,21 @@ export default defineComponent({
     },
     sortedTasks() {
       const tasks = this.tasks;
-      return tasks.slice().sort((a, b) => {
-        const acat = (a.category ?? '').toLowerCase();
-        const bcat = (b.category ?? '').toLowerCase();
-        if (acat == bcat) {
-          const atitle = a.title.toLowerCase();
-          const btitle = a.title.toLowerCase();
-          return atitle == btitle ? 0 : atitle < btitle ? -1 : 1;
-        }
-        return acat < bcat ? -1 : 1;
-      });
+      return tasks
+        .slice()
+        .sort((a, b) => {
+          const acat = (a.category ?? '').toLowerCase();
+          const bcat = (b.category ?? '').toLowerCase();
+          if (acat == bcat) {
+            const atitle = a.title.toLowerCase();
+            const btitle = a.title.toLowerCase();
+            return atitle == btitle ? 0 : atitle < btitle ? -1 : 1;
+          }
+          return acat < bcat ? -1 : 1;
+        })
+        .sort((a) => {
+          return a.solved ? 1 : -1;
+        });
     },
   },
   methods: {

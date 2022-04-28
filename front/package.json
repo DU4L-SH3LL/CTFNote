@@ -9,7 +9,7 @@
     "build": "quasar build",
     "dev": "quasar dev",
     "format": "prettier --write '**/*.{js,vue,graphql}'",
-    "lint": "eslint --ext .js,.ts,.vue,.graphql ./",
+    "lint": "eslint --ext .js,.ts,.vue, ./",
     "test": "echo \"No test specified\" && exit 0",
     "codegen": "graphql-codegen --config codegen.yml"
   },
@@ -24,7 +24,9 @@
     "core-js": "^3.6.5",
     "quasar": "^2.0.0",
     "slugify": "^1.6.1",
-    "ts-essentials": "^9.0.0"
+    "ts-essentials": "^9.0.0",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
@@ -44,7 +46,6 @@
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-graphql": "^4.0.0",
     "eslint-plugin-vue": "^7.19.1",
     "lint-staged": "^11.2.3",
     "prettier": "^2.4.1"
