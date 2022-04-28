@@ -9,25 +9,16 @@ function buildNoteContent(
   description?: string,
   category?: string
 ): string {
-  let note = "";
+  return `# ${title} - ${category}
 
-  note += `# ${title}`;
+## Description
 
-  if (category) {
-    note += ` - ${category}`;
-  }
+${description}
 
-  note += "\n\n";
+## Notes
 
-  if (description) {
-    note += `## Description\n`;
-    note += "\n";
-    note += `${description}\n`;
-
-    note += "\n";
-    note += "----\n";
-  }
-  return note;
+## Writeup
+`;
 }
 
 async function createPad(
