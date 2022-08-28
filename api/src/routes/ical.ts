@@ -1,7 +1,6 @@
 import { ICalCalendar } from "ical-generator";
 import { Request, Response, Handler } from "express";
 import { Pool } from "pg";
-import slugify from "slugify";
 
 type CtfRow = {
   id: number;
@@ -53,18 +52,17 @@ export function icalRoute(pool: Pool): Handler {
     const ctfs = await getCtfs();
 
     for (const ctf of ctfs) {
-      // I'm not sure if this works in all cases (e.g. if ctfs aren't at /#/ctf/<id> but at /ctfnote/#/ctf/<id>...)
-      const ctf_url = new URL(
-        `/#/ctf/${ctf.id}-${slugify(ctf.title)}/info`,
-        `${req.protocol}://${req.headers.host}`
-      );
+
+      const proto = req.headers["x-forwarded-proto"] || req.protocol;
+      const host = req.headers["x-forwarded-host"] || req.headers.host;
+      const ctf_url = `${proto}://${host}/#/ctf/${ctf.id}/info`;
 
       cal.createEvent({
         start: ctf.start_time,
         end: ctf.end_time,
         description: ctf.description,
         summary: ctf.title,
-        url: ctf_url.href,
+        url: ctf_url,
       });
     }
 
